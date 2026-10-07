@@ -1,0 +1,18 @@
+allowBuilds:
+  '@tsparticles/engine': false
+  esbuild: false
+
+# 待办：braces ≤3.0.3 的栈耗尽 DoS（GHSA-vfj7-8cjw-p6xm）目前**没有已发布的修复版**
+# （advisory 写「>=3.0.4」，但 npm 上 braces 最新仍是 3.0.3）→ 等上游发布后再加：
+# overrides:
+#   braces: ^3.0.4
+# 影响面：只在构建期 CLI（shadcn > fast-glob/ts-morph > micromatch > braces），运行时不加载。
+# pnpm 配置（pnpm 10+ 把这类设置放在这里）
+#
+# 依赖的 install 脚本一律不执行：
+# - @tsparticles/engine 的 install 只是检查有没有装不兼容的老包（particles.js 等）
+# - esbuild 的 postinstall 是平台二进制兜底，pnpm 会装对应的 optional 依赖
+#
+# 关键是 strictDepBuilds: false —— 否则 pnpm 会因为「忽略了构建脚本」直接报错退出
+# （ERR_PNPM_IGNORED_BUILDS）。站点 Docker 构建里同样要跑 pnpm install，必须保证退出码为 0。
+strictDepBuilds: false

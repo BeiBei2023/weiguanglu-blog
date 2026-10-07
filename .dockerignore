@@ -1,0 +1,14 @@
+node_modules
+.next
+.git
+.gitignore
+data
+原稿归档
+*.log
+.env
+.env.*
+!.env.example
+mockup.html
+*.bat
+scripts
+文档

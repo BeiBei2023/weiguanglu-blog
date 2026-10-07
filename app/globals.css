@@ -1,0 +1,1027 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ── 主题映射：语义色 + 字体，供 Tailwind 工具类使用 ── */
+@theme inline {
+  --font-sans: var(--app-font-sans);
+  --font-heading: var(--app-font-heading);
+  --font-mono: var(--app-font-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* 本站自定义语义色 */
+  --color-brand: var(--primary);
+  --color-code: var(--code-bg);
+  --color-surface: var(--surface);
+  /* 次级强调（墨青）：标签/徽章，与主色橙形成冷暖呼吸 */
+  --color-tag: var(--tag);
+  --color-tag-foreground: var(--tag-foreground);
+
+  --radius-sm: calc(var(--radius) - 6px);
+  --radius-md: calc(var(--radius) - 3px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 6px);
+}
+
+/* ── 字体栈：标题引入自托管 Inter（现代无衬线，仅拉丁/数字子集 71KB，中文回落系统字体） ── */
+:root {
+  --radius: 1rem;
+  --app-font-sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --app-font-heading: "Inter", var(--app-font-sans);
+  --app-font-mono: "JetBrains Mono", "Cascadia Code", Consolas, "Courier New", ui-monospace, monospace;
+}
+
+/* Inter 子集（latin）：font-display swap，加载前先渲染系统字体，无闪白 */
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url("/fonts/inter-latin-500-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url("/fonts/inter-latin-600-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face {
+  font-family: "Inter";
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url("/fonts/inter-latin-700-normal.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ── 亮色玻璃（浅色铺底 + 白色半透明面板） ── */
+:root {
+  --background: #e9ebee;
+  --foreground: #1c1b19;
+  --surface: rgba(255, 255, 255, 0.55);
+  --code-bg: rgba(20, 22, 26, 0.06);
+  --card: rgba(255, 255, 255, 0.5);
+  --card-foreground: #1c1b19;
+  --popover: rgba(255, 255, 255, 0.92);
+  --popover-foreground: #1c1b19;
+  --primary: #c2552f;
+  --primary-foreground: #fffaf6;
+  --secondary: rgba(0, 0, 0, 0.05);
+  --secondary-foreground: #1c1b19;
+  --muted: rgba(0, 0, 0, 0.05);
+  --muted-foreground: #5c5852;
+  --accent: rgba(0, 0, 0, 0.06);
+  --accent-foreground: #1c1b19;
+  --destructive: #b23a2e;
+  --border: rgba(0, 0, 0, 0.12);
+  --input: rgba(0, 0, 0, 0.12);
+  --ring: #c2552f;
+  --tag: #3f6f6a;
+  --tag-foreground: #f2efe9;
+}
+
+/* ── 暗色沉浸（深色铺底 + 白色玻璃面板）── */
+.dark {
+  --background: #101114;
+  --foreground: #f2efe9;
+  --surface: rgba(255, 255, 255, 0.06);
+  --code-bg: rgba(0, 0, 0, 0.34);
+  --card: rgba(255, 255, 255, 0.06);
+  --card-foreground: #f2efe9;
+  --popover: rgba(24, 25, 28, 0.94);
+  --popover-foreground: #f2efe9;
+  --primary: #e07a52;
+  --primary-foreground: #1a120d;
+  --secondary: rgba(255, 255, 255, 0.08);
+  --secondary-foreground: #f2efe9;
+  --muted: rgba(255, 255, 255, 0.07);
+  --muted-foreground: #b7b2a8;
+  --accent: rgba(255, 255, 255, 0.09);
+  --accent-foreground: #f2efe9;
+  --destructive: #ff6a5a;
+  --border: rgba(255, 255, 255, 0.13);
+  --input: rgba(255, 255, 255, 0.16);
+  --ring: #e07a52;
+  --tag: #8fb8b1;
+  --tag-foreground: #10231f;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    @apply font-heading;
+  }
+}
+
+/* ── 液态玻璃材质（更透 + 悬停动态） ── */
+.glass {
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.1),
+      rgba(255, 255, 255, 0.035) 45%,
+      rgba(255, 255, 255, 0.015)
+    ),
+    color-mix(in oklab, var(--background) 55%, transparent);
+  backdrop-filter: blur(26px) saturate(170%);
+  -webkit-backdrop-filter: blur(26px) saturate(170%);
+  box-shadow:
+    0 24px 60px rgba(0, 0, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.03);
+  transition:
+    transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.3s ease,
+    border-color 0.3s ease;
+}
+.glass:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in oklab, var(--primary) 30%, var(--border));
+  box-shadow:
+    0 30px 70px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3),
+    0 0 0 1px color-mix(in oklab, var(--primary) 26%, transparent);
+}
+:root:not(.dark) .glass {
+  border-color: rgba(255, 255, 255, 0.65);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.66),
+    rgba(255, 255, 255, 0.42) 45%,
+    rgba(255, 255, 255, 0.34)
+  );
+  box-shadow:
+    0 24px 60px rgba(60, 50, 40, 0.16),
+    inset 0 1px 0 rgba(255, 255, 255, 0.85),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.3);
+}
+
+/* 弹层玻璃：popover 底 + 真实背景透出，用于命令面板/弹窗（保证可读的最低不透明度） */
+.glass-modal {
+  background: color-mix(in oklab, var(--popover) 88%, transparent);
+  backdrop-filter: blur(24px) saturate(160%);
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  border: 1px solid var(--border);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.18);
+}
+
+/* 管理区/工作站：更实的不透明底（popover 令牌，亮暗自适应），提升可读性 */
+.admin-scope .glass,
+:root:not(.dark) .admin-scope .glass {
+  background: var(--popover);
+}
+.admin-scope .glass:hover {
+  transform: none;
+  background: var(--popover);
+}
+
+/* 液态玻璃·弱（侧栏挂件/次要卡片）：更薄、更安静，不与主内容抢视觉 */
+.glass-soft {
+  border: 1px solid var(--border);
+  background:
+    linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.07),
+      rgba(255, 255, 255, 0.025) 45%,
+      rgba(255, 255, 255, 0.01)
+    ),
+    color-mix(in oklab, var(--background) 62%, transparent);
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  box-shadow:
+    0 12px 32px rgba(0, 0, 0, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.14);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.glass-soft:hover {
+  border-color: color-mix(in oklab, var(--primary) 24%, var(--border));
+}
+:root:not(.dark) .glass-soft {
+  border-color: rgba(255, 255, 255, 0.6);
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.4) 45%,
+    rgba(255, 255, 255, 0.32)
+  );
+  box-shadow:
+    0 12px 32px rgba(60, 50, 40, 0.12),
+    inset 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+
+/* 背景视频：系统开启「减少动态效果」时隐藏（回落到背景图/光晕） */
+@media (prefers-reduced-motion: reduce) {
+  [data-wgl-bg-video] {
+    display: none !important;
+  }
+}
+
+/* 元器件仓库：保留站点玻璃观感，仅去掉悬停位移（列表密集，避免面板跳动） */
+.inventory-scope .glass:hover {
+  transform: none;
+}
+
+/* 吸顶工具条：不透明底，避免下方内容透出（元器件仓库与 MQTT 页均用） */
+.glass.sticky-bar,
+:root:not(.dark) .glass.sticky-bar,
+.glass.sticky-bar:hover {
+  background: var(--popover);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* 面板风格：浅色磨砂 + 黑字（设置 panelStyle=light；管理区仍保持深色） */
+.panel-light {
+  --foreground: #1c1b19;
+  --card: rgba(255, 255, 255, 0.5);
+  --card-foreground: #1c1b19;
+  --popover: rgba(255, 255, 255, 0.94);
+  --popover-foreground: #1c1b19;
+  --primary: #c2552f;
+  --primary-foreground: #fffaf6;
+  --secondary: rgba(0, 0, 0, 0.05);
+  --secondary-foreground: #1c1b19;
+  --muted: rgba(0, 0, 0, 0.05);
+  --muted-foreground: #5c5852;
+  --accent: rgba(0, 0, 0, 0.06);
+  --accent-foreground: #1c1b19;
+  --destructive: #b23a2e;
+  --border: rgba(0, 0, 0, 0.12);
+  --input: rgba(0, 0, 0, 0.12);
+  --ring: #c2552f;
+  --tag: #3f6f6a;
+  --tag-foreground: #f2efe9;
+}
+:root .panel-light .glass,
+:root .panel-light .glass:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 255, 255, 0.74),
+    rgba(255, 255, 255, 0.52) 45%,
+    rgba(255, 255, 255, 0.44)
+  );
+  border-color: rgba(255, 255, 255, 0.7);
+  box-shadow:
+    0 24px 60px rgba(60, 50, 40, 0.18),
+    inset 0 1px 0 rgba(255, 255, 255, 0.9),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.35);
+}
+
+/* 管理区/工作站：无论面板风格，都用不透明底（popover 令牌自适应明暗） */
+:root .panel-light .admin-scope .glass,
+.panel-light .admin-scope .glass,
+:root .panel-light .admin-scope .glass:hover,
+.panel-light .admin-scope .glass:hover {
+  background: var(--popover);
+}
+/* 导航胶囊：hover 时一道缓慢扫过高光（液态感），平时不抢戏 */
+.glass-nav {
+  position: relative;
+  overflow: hidden;
+}
+.glass-nav::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 65%
+  );
+  background-size: 240% 100%;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+.glass-nav:hover::after {
+  opacity: 1;
+  animation: glass-sheen 10s ease-in-out infinite;
+}
+@keyframes glass-sheen {
+  0%,
+  100% {
+    background-position: 180% 0;
+  }
+  50% {
+    background-position: -80% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .glass,
+  .glass-nav::after {
+    transition: none;
+    animation: none;
+  }
+}
+
+/* 宫格定位高亮：格子本身描边+底色高亮（outline，不与 hover 阴影冲突），再用伪元素做持续扩散光圈 */
+.wgl-slot-target {
+  position: relative;
+  z-index: 1;
+  border-color: var(--primary);
+  border-style: solid;
+  background: color-mix(in oklab, var(--primary) 14%, var(--background));
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+.wgl-slot-target::after {
+  content: "";
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  pointer-events: none;
+  animation: wgl-slot-ping 1.6s ease-out infinite;
+}
+@keyframes wgl-slot-ping {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in oklab, var(--primary) 55%, transparent);
+  }
+  70%,
+  100% {
+    box-shadow: 0 0 0 16px transparent;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .wgl-slot-target::after {
+    animation: none;
+  }
+}
+
+/* ── 正文排版（Markdown 渲染结果）── */
+.prose-wgl {
+  font-size: 16px;
+  line-height: 1.8;
+  /* 长路径 / 长 URL / 长 inline code 在窄屏（手机）会把整页撑宽 → 允许在任意位置换行 */
+  overflow-wrap: anywhere;
+}
+.prose-wgl > :first-child {
+  margin-top: 0;
+}
+.prose-wgl p {
+  margin: 1.1em 0;
+}
+.prose-wgl h2 {
+  margin: 2.2em 0 0.6em;
+  padding-bottom: 0.4em;
+  border-bottom: 1px solid var(--border);
+  font-size: 1.4em;
+  font-weight: 700;
+}
+.prose-wgl h3 {
+  margin: 1.8em 0 0.5em;
+  font-size: 1.2em;
+  font-weight: 700;
+}
+.prose-wgl h4 {
+  margin: 1.5em 0 0.5em;
+  font-size: 1.05em;
+  font-weight: 700;
+}
+.prose-wgl a {
+  color: var(--primary);
+  text-decoration: none;
+}
+.prose-wgl a:hover {
+  text-decoration: underline;
+}
+.prose-wgl ul {
+  margin: 1.1em 0;
+  padding-left: 1.4em;
+  list-style: disc;
+}
+.prose-wgl ol {
+  margin: 1.1em 0;
+  padding-left: 1.4em;
+  list-style: decimal;
+}
+.prose-wgl li {
+  margin: 0.35em 0;
+}
+.prose-wgl blockquote {
+  margin: 1.3em 0;
+  padding: 0.2em 0 0.2em 1.1em;
+  border-left: 3px solid var(--primary);
+  color: var(--muted-foreground);
+}
+.prose-wgl img {
+  max-width: 100%;
+  height: auto;
+  margin: 1.4em 0;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  cursor: zoom-in;
+}
+.prose-wgl hr {
+  margin: 2.2em 0;
+  border: 0;
+  border-top: 1px solid var(--border);
+}
+.prose-wgl :not(pre) > code {
+  padding: 0.12em 0.4em;
+  border-radius: 0.375rem;
+  background: var(--code-bg);
+  color: var(--primary);
+  font-family: var(--app-font-mono);
+  font-size: 0.88em;
+}
+.prose-wgl pre {
+  position: relative;
+  margin: 1.3em 0;
+  padding: 1rem 1.1rem;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: 0.9rem;
+  background: var(--code-bg);
+  font-family: var(--app-font-mono);
+  font-size: 13.5px;
+  line-height: 1.7;
+}
+.prose-wgl pre code {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font-size: inherit;
+}
+
+/* 超长代码块默认折叠（由 article-content.tsx 注入 .wgl-collapsed / .wgl-collapse-toggle） */
+.prose-wgl pre.wgl-collapsed {
+  max-height: 22rem;
+  overflow-y: hidden;
+}
+.prose-wgl pre.wgl-collapsed::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0 0;
+  height: 3.5rem;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent, var(--code-bg));
+}
+.prose-wgl .wgl-collapse-toggle {
+  display: block;
+  width: 100%;
+  margin-top: 0.4rem;
+  padding: 0.5rem;
+  border: 1px solid var(--border);
+  border-radius: 0.75rem;
+  background: var(--surface);
+  color: var(--muted-foreground, inherit);
+  font-size: 0.8rem;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.prose-wgl .wgl-collapse-toggle:hover {
+  border-color: var(--primary);
+  color: var(--primary);
+}
+.prose-wgl figure[data-rehype-pretty-code-figure] {
+  margin: 1.3em 0;
+}
+.prose-wgl figure[data-rehype-pretty-code-figure] pre {
+  margin: 0;
+}
+/* shiki 亮/暗双主题 */
+.prose-wgl code[data-theme*=" "],
+.prose-wgl code[data-theme*=" "] span {
+  color: var(--shiki-light);
+}
+.dark .prose-wgl code[data-theme*=" "],
+.dark .prose-wgl code[data-theme*=" "] span {
+  color: var(--shiki-dark);
+}
+.prose-wgl table {
+  display: block;
+  width: 100%;
+  margin: 1.4em 0;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.95em;
+}
+.prose-wgl th,
+.prose-wgl td {
+  padding: 0.5em 0.8em;
+  border: 1px solid var(--border);
+  text-align: left;
+}
+.prose-wgl th {
+  background: var(--surface);
+  font-weight: 600;
+}
+
+/* 代码块：行号 */
+.prose-wgl pre[data-line-numbers] code {
+  counter-reset: line;
+}
+.prose-wgl pre[data-line-numbers] code > [data-line]::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 1.4em;
+  margin-right: 1em;
+  text-align: right;
+  color: var(--muted-foreground);
+  opacity: 0.55;
+  user-select: none;
+}
+
+/* 工作台 · 刻度充能：进场时逐格亮起 */
+@keyframes wgl-gauge-on {
+  from {
+    transform: scaleX(0.15);
+    opacity: 0;
+  }
+  to {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
+
+/* 工作站作用域（app/w/layout.tsx）：读数等宽数字对齐 + 面板一道内高光 */
+.w-scope {
+  font-variant-numeric: tabular-nums;
+}
+
+.w-scope .glass {
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 事件带（数据页族）：横向读数带 */
+.w-band {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+  gap: 0;
+}
+.w-band > * + * {
+  border-left: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+}
+.w-band-cell {
+  flex: 1 1 0;
+  min-width: 130px;
+  padding: 0.75rem 1rem;
+}
+.w-band-cell .band-label {
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  color: var(--muted-foreground);
+  text-transform: uppercase;
+}
+.w-band-cell .band-value {
+  margin-top: 0.25rem;
+  font-family: var(--font-heading);
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.1;
+}
+.w-band-cell .band-hint {
+  margin-top: 0.15rem;
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+}
+
+/* 事件带（数据页族）：时间轴 */
+.w-timeline {
+  position: relative;
+}
+.w-timeline > li {
+  position: relative;
+  display: flex;
+  gap: 0.9rem;
+  padding: 0.85rem 0;
+}
+.w-timeline > li + li {
+  border-top: 1px solid color-mix(in oklab, var(--border) 60%, transparent);
+}
+.w-timeline > li::before {
+  content: "";
+  position: absolute;
+  left: 5.35rem;
+  top: 1.15rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 999px;
+  background: var(--muted-foreground);
+  opacity: 0.45;
+}
+.w-timeline > li:first-child::before {
+  background: var(--primary);
+  opacity: 1;
+  box-shadow: 0 0 0 4px color-mix(in oklab, var(--primary) 20%, transparent);
+}
+.w-timeline .tl-time {
+  width: 4.6rem;
+  flex-shrink: 0;
+  font-size: 11.5px;
+  color: var(--muted-foreground);
+}
+.w-timeline .tl-body {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-left: 1.4rem;
+}
+.w-timeline .tl-subject {
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+.w-timeline .tl-note {
+  display: block;
+  margin-top: 0.15rem;
+  font-size: 13.5px;
+  line-height: 1.5;
+}
+.w-timeline .tl-value {
+  flex-shrink: 0;
+  font-size: 12px;
+  color: var(--muted-foreground);
+}
+
+@media print {
+  .w-status-strip {
+    display: none !important;
+  }
+}
+
+.wgl-gauge-seg {
+  transform-origin: left center;
+  animation: wgl-gauge-on 520ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+/* 工作台 · 服务列表游标：悬停时左侧亮起一根橙标 */
+.wgl-rows > li {
+  position: relative;
+}
+.wgl-rows > li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.5rem;
+  bottom: 0.5rem;
+  width: 2px;
+  border-radius: 999px;
+  background: var(--primary);
+  opacity: 0;
+  transform: scaleY(0.3);
+  transition:
+    opacity 160ms ease,
+    transform 160ms ease;
+}
+.wgl-rows > li:hover::before {
+  opacity: 1;
+  transform: scaleY(1);
+}
+
+/* 工作台 · 拼贴进场：逐格淡入上浮 */
+@keyframes wgl-cell-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.wgl-cells > * {
+  animation: wgl-cell-in 420ms cubic-bezier(0.22, 0.61, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wgl-gauge-seg {
+    animation: none;
+  }
+  .wgl-rows > li::before {
+    transition: none;
+  }
+  .wgl-cells > * {
+    animation: none;
+  }
+}
+
+/* 阅读页「档案柜」：正文量级与度量（2026-10-05 全站方向探索第一轮） */
+.reading-archive .prose-wgl {
+  font-size: 16.5px;
+  line-height: 1.85;
+}
+.reading-archive .prose-wgl > p {
+  margin-bottom: 1.2em;
+}
+.reading-archive .prose-wgl blockquote {
+  border-left: 2px solid var(--primary);
+  background: transparent;
+  border-radius: 0;
+  padding-left: 1rem;
+}
+.reading-archive .prose-wgl pre {
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+/* 静态长文页（关于 / 免责声明 / 隐私政策 / 开源说明）：读稿台正文规格 */
+.reading-doc {
+  font-size: 16.5px;
+  line-height: 1.85;
+}
+.reading-doc > p {
+  margin: 1.15em 0;
+}
+.reading-doc h2 {
+  margin-top: 2.1em;
+  margin-bottom: 0.6em;
+  font-size: 21px;
+  line-height: 1.45;
+}
+.reading-doc h3 {
+  margin-top: 1.7em;
+  margin-bottom: 0.45em;
+  font-size: 17.5px;
+  line-height: 1.5;
+}
+.reading-doc > ul,
+.reading-doc > ol {
+  margin: 1em 0;
+}
+.reading-doc blockquote {
+  border-left: 2px solid var(--primary);
+  padding-left: 1em;
+  color: var(--muted-foreground);
+}
+.reading-doc pre {
+  border-radius: 12px;
+  box-shadow: none;
+}
+
+/* 代码块：复制按钮 */
+.prose-wgl pre .wgl-copy {
+  position: absolute;
+  top: 0.4rem;
+  right: 0.5rem;
+  padding: 0.15rem 0.5rem;
+  font-size: 12px;
+  border: 1px solid var(--border);
+  border-radius: 0.5rem;
+  background: var(--code-bg);
+  color: var(--muted-foreground);
+  opacity: 0.7;
+  transition: opacity 0.15s;
+  cursor: pointer;
+}
+.prose-wgl pre:hover .wgl-copy,
+.prose-wgl pre .wgl-copy:focus-visible {
+  opacity: 1;
+}
+
+/* ── 日历挂件（react-day-picker 适配） ── */
+.wgl-calendar .rdp-root {
+  --rdp-accent-color: var(--primary);
+  --rdp-accent-background-color: color-mix(in oklab, var(--primary) 16%, transparent);
+  --rdp-today-color: var(--primary);
+  --rdp-day-width: 1.85rem;
+  --rdp-day-height: 1.85rem;
+  --rdp-day_button-width: 1.75rem;
+  --rdp-day_button-height: 1.75rem;
+  --rdp-day_button-border-radius: 0.5rem;
+  --rdp-day_button-border: 1px solid transparent;
+  --rdp-selected-border: 1px solid transparent;
+  --rdp-nav_button-width: 1.75rem;
+  --rdp-nav_button-height: 1.75rem;
+  --rdp-nav-height: 2rem;
+  --rdp-weekday-padding: 0.25rem 0;
+  --rdp-outside-opacity: 0.4;
+  font-size: 0.8125rem;
+  color: var(--foreground);
+}
+.wgl-calendar .rdp-month_caption {
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+.wgl-calendar .rdp-weekday {
+  color: var(--muted-foreground);
+}
+.wgl-calendar .rdp-day.wgl-haspost .rdp-day_button {
+  color: var(--primary);
+  font-weight: 600;
+}
+.wgl-calendar .rdp-day.wgl-haspost .rdp-day_button:hover {
+  background: var(--primary);
+  color: var(--primary-foreground);
+}
+.wgl-calendar .rdp-day_button:disabled {
+  opacity: 0.3;
+}
+.wgl-calendar a.rdp-day_button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+/* ── 表单控件（玻璃风） ── */input:not([type="range"]):not([type="checkbox"]),
+textarea,
+select {
+  color: var(--foreground);
+}
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted-foreground);
+}
+
+/* ── 细滚动条（目录等滚动区） ── */
+.wgl-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
+.wgl-scroll::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+.wgl-scroll::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 8px;
+}
+.wgl-scroll::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* ── 访客地图 tooltip（ECharts 悬浮概览） ── */
+.wgl-map-tip {
+  box-sizing: border-box;
+  width: 260px;
+  max-width: 260px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid var(--border);
+  background: var(--popover);
+  color: var(--foreground);
+  font-size: 12px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.28);
+}
+.wgl-map-tip .tip-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.wgl-map-tip .tip-head > * {
+  min-width: 0;
+}
+.wgl-map-tip .tip-share {
+  flex-shrink: 0;
+}
+.wgl-map-tip .tip-name {
+  font-weight: 600;
+  font-size: 13px;
+}
+.wgl-map-tip .tip-share {
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+.wgl-map-tip .tip-sub,
+.wgl-map-tip .tip-foot {
+  margin-top: 2px;
+  color: var(--muted-foreground);
+  font-size: 11px;
+}
+.wgl-map-tip .tip-foot {
+  margin-top: 8px;
+}
+.wgl-map-tip .tip-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 4px;
+}
+.wgl-map-tip .tip-row b {
+  font-variant-numeric: tabular-nums;
+}
+.wgl-map-tip .tip-sec {
+  margin-top: 8px;
+  color: var(--muted-foreground);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+}
+.wgl-map-tip .tip-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 3px;
+}
+.wgl-map-tip .tip-bar span {
+  width: 48px;
+  flex-shrink: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  color: var(--muted-foreground);
+}
+.wgl-map-tip .tip-bar em {
+  flex: 1;
+  min-width: 0;
+  display: block;
+  height: 5px;
+  border-radius: 999px;
+  background: var(--accent);
+  overflow: hidden;
+}
+.wgl-map-tip .tip-bar em i {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: var(--primary);
+}
+.wgl-map-tip .tip-bar b {
+  width: 20px;
+  text-align: right;
+  font-variant-numeric: tabular-nums;
+}
+.wgl-map-tip .tip-posts {
+  margin-top: 2px;
+  display: grid;
+  gap: 2px;
+}
+.wgl-map-tip .tip-posts li {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  min-width: 0;
+}
+.wgl-map-tip .tip-posts span {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+.wgl-map-tip .tip-posts b {
+  flex-shrink: 0;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── 节日氛围 ────────────────────────────────────────────────
+   节日当天由 app/layout.tsx 注入 --festival-color，
+   这里只负责把主题色柔和地铺到全站（不抢内容，可读性优先）。 */
+.festival-glow {
+  background:
+    radial-gradient(60% 50% at 8% -10%, color-mix(in oklab, var(--festival-color) 16%, transparent), transparent 72%),
+    radial-gradient(50% 50% at 102% 108%, color-mix(in oklab, var(--festival-color) 11%, transparent), transparent 72%);
+  animation: festival-glow-breathe 9s ease-in-out infinite;
+}
+
+@keyframes festival-glow-breathe {
+  0%,
+  100% {
+    opacity: 0.75;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+/* 系统「减少动态效果」时不呼吸、不闪 */
+@media (prefers-reduced-motion: reduce) {
+  .festival-glow {
+    animation: none;
+  }
+}

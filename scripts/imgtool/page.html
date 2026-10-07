@@ -1,0 +1,1002 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>博客 · 素材台</title>
+<style>
+  :root{--bg:#101114;--panel:#1a1c20;--panel2:#0e0f12;--bd:#2c2f35;--fg:#f2efe9;--mut:#a9a49b;--pri:#e07a52;--ok:#7ec699;--warn:#e8c07d;--bad:#e0716b}
+  *{box-sizing:border-box}
+  [hidden]{display:none !important}
+  body{margin:0;background:var(--bg);color:var(--fg);font:14px/1.6 -apple-system,"Segoe UI","Microsoft YaHei",sans-serif;padding:20px 20px 90px}
+  .wrap{max-width:1080px;margin:0 auto;display:grid;gap:16px}
+  h1{font-size:20px;margin:0}
+  .sub{color:var(--mut);font-size:12px}
+  .card{background:var(--panel);border:1px solid var(--bd);border-radius:16px;padding:16px}
+  .cardhead{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:10px}
+  .cardhead b{font-size:15px}
+  .sp{flex:1}
+  .row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:10px}
+  .row.end{justify-content:flex-end}
+  input[type=text],input[type=search],textarea,select{background:var(--panel2);border:1px solid var(--bd);color:var(--fg);border-radius:8px;padding:7px 10px;font:inherit;outline:none}
+  input[type=text]:focus,input[type=search]:focus,textarea:focus,select:focus{border-color:var(--pri)}
+  input[type=search]{min-width:200px}
+  textarea{width:100%;min-height:84px;resize:vertical;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+  button{background:var(--pri);color:#1a120d;border:0;border-radius:8px;padding:7px 13px;font:inherit;font-weight:600;cursor:pointer}
+  button.ghost{background:transparent;border:1px solid var(--bd);color:var(--mut);font-weight:400}
+  button.danger{border-color:#5a2e2c;color:var(--bad)}
+  button:disabled{opacity:.45;cursor:default}
+  button:hover:not(:disabled){opacity:.9}
+  .tabs{display:flex;gap:6px;flex-wrap:wrap}
+  .tabs button{background:transparent;border:1px solid var(--bd);color:var(--mut);font-weight:400;padding:6px 14px;border-radius:999px}
+  .tabs button.on{background:var(--pri);border-color:var(--pri);color:#1a120d;font-weight:600}
+  .pill{display:inline-block;background:#3a2a1e;color:var(--warn);border-radius:999px;font-size:11px;padding:1px 7px;margin-left:4px}
+  .drop{border:1.5px dashed var(--bd);border-radius:12px;padding:24px;text-align:center;color:var(--mut);cursor:pointer;transition:.2s;margin-top:10px}
+  .drop.hot{border-color:var(--pri);color:var(--pri);background:rgba(224,122,82,.06)}
+  ul.rows{list-style:none;padding:0;margin:10px 0 0;display:grid;gap:8px}
+  ul.rows li{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:9px 10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+  li img.thumb{width:46px;height:46px;object-fit:cover;border-radius:8px;border:1px solid var(--bd);background:#000}
+  li .ic{width:46px;height:46px;border-radius:8px;border:1px solid var(--bd);display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:11px;background:#14161a}
+  code{font-family:ui-monospace,Consolas,monospace;font-size:12px;color:var(--pri);word-break:break-all}
+  .msg{color:var(--mut);font-size:12px}
+  .msg.bad{color:var(--bad)}
+  label.ck{display:flex;gap:6px;align-items:center;color:var(--mut);font-size:13px}
+  pre{background:var(--panel2);border:1px solid var(--bd);border-radius:10px;padding:10px;margin:10px 0 0;font-size:12px;max-height:260px;overflow:auto;white-space:pre-wrap;color:var(--mut);font-family:ui-monospace,Consolas,monospace}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(168px,1fr));gap:10px;margin-top:10px}
+  .item{background:var(--panel2);border:1px solid var(--bd);border-radius:12px;padding:9px;display:grid;gap:6px;position:relative}
+  .item.sel{border-color:var(--pri);box-shadow:0 0 0 1px var(--pri) inset}
+  .item .ph{height:110px;border-radius:8px;border:1px solid var(--bd);background:#000;display:flex;align-items:center;justify-content:center;overflow:hidden}
+  .item .ph img{width:100%;height:100%;object-fit:cover;display:block}
+  .item .nm{font-size:12px;word-break:break-all;line-height:1.35}
+  .item .meta{display:flex;gap:6px;align-items:center;flex-wrap:wrap;color:var(--mut);font-size:11px}
+  .item .acts{display:flex;gap:6px;flex-wrap:wrap}
+  .item .acts button{padding:3px 8px;font-size:12px;border-radius:6px}
+  .item .ck2{position:absolute;top:8px;left:8px;background:#000a;border-radius:6px;padding:2px}
+  .badge{display:inline-block;border-radius:999px;font-size:11px;padding:1px 7px;border:1px solid var(--bd);color:var(--mut)}
+  .badge.ok{color:var(--ok);border-color:#2f4a3a}
+  .badge.miss{color:var(--warn);border-color:#4a3f2a}
+  .badge.diff{color:var(--bad);border-color:#5a2e2c}
+  .badge.ref{color:#9fb8d8;border-color:#2c3a4a}
+  .progress{height:8px;background:var(--panel2);border:1px solid var(--bd);border-radius:999px;overflow:hidden;margin-top:10px}
+  .progress .bar{height:100%;width:0;background:var(--pri);transition:width .15s}
+  .selbar{position:fixed;left:50%;transform:translateX(-50%);bottom:18px;background:#20232a;border:1px solid var(--bd);border-radius:999px;padding:9px 16px;display:flex;gap:10px;align-items:center;box-shadow:0 8px 30px #000a}
+  .modal{position:fixed;inset:0;background:#000a;display:flex;align-items:center;justify-content:center;padding:20px}
+  .modal .box{background:var(--panel);border:1px solid var(--bd);border-radius:14px;padding:18px;max-width:560px;width:100%;display:grid;gap:10px}
+  .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:74px;background:#20232a;border:1px solid var(--bd);border-radius:10px;padding:9px 16px;color:var(--fg);font-size:13px;box-shadow:0 8px 30px #000a;max-width:80vw}
+  .chips{display:flex;gap:6px;flex-wrap:wrap;margin-top:6px}
+  details summary{cursor:pointer;color:var(--mut)}
+  .empty{color:var(--mut);text-align:center;padding:26px 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card">
+    <div class="cardhead">
+      <h1>博客 · 素材台</h1>
+      <span class="sp"></span>
+      <span class="sub" id="subline">本地运行 · 图片存到 content/images/</span>
+    </div>
+    <div class="cardhead">
+      <nav class="tabs" id="tabs">
+        <button data-tab="import" class="on">导入</button>
+        <button data-tab="library">图库 <span class="pill" id="pillMissing" hidden></span></button>
+        <button data-tab="post">文章检查</button>
+        <button data-tab="git">提交</button>
+        <button data-tab="sync">同步</button>
+        <button data-tab="tips">贴士</button>
+      </nav>
+    </div>
+  </div>
+
+  <!-- ── 导入 ── -->
+  <section id="tab-import">
+    <div class="card">
+      <div class="cardhead"><b>导入图片</b><span class="sp"></span><span class="msg" id="impStatus"></span></div>
+      <div class="row">
+        <label class="ck"><input type="checkbox" id="keep"> 保留原文件名（空格等自动换成 -）</label>
+        <input type="text" id="prefix" placeholder="文件名前缀（常用：文章 slug）" style="width:260px">
+      </div>
+      <div class="row">
+        <label class="ck"><input type="checkbox" id="autoCopy" checked> 导入后自动复制到剪贴板</label>
+        <select id="fmt" title="复制格式">
+          <option value="md">Markdown</option>
+          <option value="html">HTML &lt;img&gt;</option>
+          <option value="path">站内路径</option>
+          <option value="full">完整 URL</option>
+        </select>
+        <input type="text" id="alt" placeholder="alt 文本（可选，会写进 Markdown）" style="flex:1;min-width:180px">
+      </div>
+      <div class="drop" id="drop">拖拽图片到此处 / 点击选择文件 / Ctrl+V 粘贴截图（快捷键 Ctrl+Shift+U 直接读剪贴板）</div>
+      <input type="file" id="file" multiple hidden>
+      <div class="row">
+        <button class="ghost" id="upall">把本地全部图片上传到服务器</button>
+        <button class="ghost" id="retryFail" hidden>重试失败项</button>
+      </div>
+      <div class="progress" id="impProg" hidden><div class="bar" id="impBar"></div></div>
+      <ul class="rows" id="list1"></ul>
+    </div>
+
+    <div class="card">
+      <div class="cardhead"><b>图床 URL → 本地</b><span class="sp"></span><span class="msg" id="msg2"></span></div>
+      <div class="sub">每行一个图片 URL；下载到本地并给出 Markdown，可一键替换进文章（替换前自动备份到 data/imgtool-backups/）</div>
+      <textarea id="urls" placeholder="https://图床/xxx.png&#10;https://图床/yyy.jpg"></textarea>
+      <div class="row">
+        <button id="go">下载并本地化</button>
+        <span class="sp"></span>
+        <select id="post"></select>
+        <button class="ghost" id="apply">把上面的替换进该文章</button>
+      </div>
+      <ul class="rows" id="list2"></ul>
+    </div>
+  </section>
+
+  <!-- ── 图库 ── -->
+  <section id="tab-library" hidden>
+    <div class="card">
+      <div class="cardhead">
+        <b>图库</b><span class="msg" id="libSummary"></span><span class="sp"></span>
+        <button class="ghost" id="libRefresh">刷新</button>
+      </div>
+      <div class="row">
+        <input type="search" id="libQ" placeholder="搜索文件名…">
+        <select id="libFilter">
+          <option value="all">全部</option>
+          <option value="missing">未上传</option>
+          <option value="ok">已上传</option>
+          <option value="unused">未被引用</option>
+          <option value="big">大于 1MB</option>
+        </select>
+        <select id="libSort">
+          <option value="time">最新在前</option>
+          <option value="name">按名称</option>
+          <option value="size">按体积</option>
+        </select>
+        <button class="ghost" id="libSelMissing">选中未上传</button>
+        <button class="ghost" id="libClearSel">清除选择</button>
+      </div>
+      <div class="grid" id="libGrid"></div>
+      <div class="empty" id="libEmpty" hidden>没有匹配的图片</div>
+    </div>
+    <div class="card">
+      <details id="trashBox">
+        <summary>回收站 <span class="msg" id="trashCount"></span></summary>
+        <div class="row"><button class="ghost" id="trashEmpty">清空回收站</button></div>
+        <ul class="rows" id="trashList"></ul>
+      </details>
+    </div>
+    <div class="card">
+      <details id="histBox">
+        <summary>最近记录 <span class="msg">（导入 / 下载 / 上传 / 回收站）</span></summary>
+        <ul class="rows" id="histList"></ul>
+      </details>
+    </div>
+  </section>
+
+  <!-- ── 文章检查 ── -->
+  <section id="tab-post" hidden>
+    <div class="card">
+      <div class="cardhead">
+        <b>文章检查 / 一键发布</b><span class="sp"></span>
+        <select id="postSel"></select>
+        <button class="ghost" id="postRefreshBtn">重新检查</button>
+      </div>
+      <div class="msg" id="postMsg"></div>
+      <div class="chips" id="postChips"></div>
+      <ul class="rows" id="postRows"></ul>
+      <div class="row">
+        <button id="publish">一键发布（补传 + 提交推送）</button>
+        <input type="text" id="pubMsg" placeholder="提交说明（留空自动：content: 更新文章 &lt;slug&gt;）" style="flex:1;min-width:240px">
+      </div>
+      <div class="msg" id="pubHint"></div>
+      <pre id="pubOut" hidden></pre>
+    </div>
+  </section>
+
+  <!-- ── 提交 ── -->
+  <section id="tab-git" hidden>
+    <div class="card">
+      <div class="cardhead"><b>Git 提交 / 同步</b><span class="sp"></span><span class="msg" id="gitmsg"></span></div>
+      <div class="sub">改完内容点一下即可（自动：add → commit → pull → push；pull 成功才 push）· 只提交 content/、原稿归档/、文档/ 下的改动</div>
+      <div class="row">
+        <input type="text" id="cmsg" style="flex:1;min-width:300px" placeholder="提交说明">
+        <button id="commit">提交并推送</button>
+        <button class="ghost" id="pull">仅拉取 pull</button>
+        <button class="ghost" id="refresh">刷新状态</button>
+      </div>
+      <pre id="gitout">载入中…</pre>
+    </div>
+  </section>
+
+  <!-- ── 同步（不走 git） ── -->
+  <section id="tab-sync" hidden>
+    <div class="card">
+      <div class="cardhead">
+        <b>文章同步（不走 git）</b><span class="sp"></span>
+        <label class="ck"><input type="checkbox" id="syncImages"> 同时同步图片</label>
+        <button class="ghost" id="syncCheck">检查差异</button>
+      </div>
+      <div class="sub">
+        直接跟服务器上的文章目录对拷（<code id="syncDir">…</code>）。
+        <b>拉取</b>＝把服务器上改过的文章拿回本地（在网页端 /admin 改的也算）；<b>推送</b>＝把本地改好的传上去，不用 git。
+        每次执行前自动备份到 <code>data/imgtool-backups/sync/</code>，本地 git 状态不受影响。
+      </div>
+      <div class="msg" id="syncMsg">点「检查差异」看看两边有什么不同。</div>
+      <div class="chips" id="syncChips"></div>
+      <div class="row">
+        <button class="ghost" id="pickPull">选中可拉取</button>
+        <button class="ghost" id="pickPush">选中可推送</button>
+        <span class="sp"></span>
+        <span class="msg">状态：服务器改过＝只有服务器改；两边都改过＝冲突，先「看差异」再决定</span>
+      </div>
+      <ul class="rows" id="syncRows"></ul>
+      <div class="row">
+        <button id="syncPull">拉取选中的（服务器 → 本地）</button>
+        <button class="ghost" id="syncPush">推送选中的（本地 → 服务器）</button>
+        <span class="sp"></span>
+        <button class="ghost" id="syncPullAll">全部以服务器为准</button>
+        <button class="ghost danger" id="syncPushAll">全部以本地为准</button>
+      </div>
+      <pre id="syncOut" hidden></pre>
+    </div>
+  </section>
+
+  <!-- ── 贴士 ── -->
+  <section id="tab-tips" hidden>
+    <div class="card">
+      <div class="cardhead"><b>贴士</b></div>
+      <ul class="rows" id="tipsList">
+        <li>正文里可以写<b>相对路径</b>：<code>![](images/foo.png)</code> 或 <code>![](./foo.png)</code>，站点会当作 <code>/content-images/foo.png</code> 渲染（Obsidian 把附件目录设成 content/images 就能直接粘图）。</li>
+        <li>用图床也行，直接贴 URL；想存档就用「图床 URL → 本地」拉回来。</li>
+        <li><b>图库</b>会扫描 <code>content/images</code> 与所有文章引用：能看哪些图还没传服务器、哪些没被任何文章引用；删除是<b>先移入回收站</b>，可以恢复。</li>
+        <li><b>文章检查 → 一键发布</b>：自动补传文章引用的图 → 提交推送 → 校验公网可访问（防止「文章上线了图却 404」）。</li>
+        <li>快捷键：<code>Ctrl+Shift+U</code> 读剪贴板图片直接导入；<code>Ctrl+Enter</code> 在文章页=一键发布，其它页=提交推送。</li>
+        <li>本工具只写 <code>content/images/</code>、指定文章的 md，与 <code>data/</code> 下的记录（回收站 / 备份 / 历史 / alt）。</li>
+      </ul>
+    </div>
+  </section>
+</div>
+
+<div class="selbar" id="selbar" hidden>
+  <span class="msg" id="selInfo"></span>
+  <button id="selUpload">上传选中</button>
+  <button class="ghost" id="selCopy">复制选中</button>
+  <button class="ghost danger" id="selTrash">移入回收站</button>
+  <button class="ghost" id="selCancel">取消</button>
+</div>
+
+<div class="modal" id="modal" hidden>
+  <div class="box">
+    <b id="mTitle">确认</b>
+    <div class="msg" id="mBody" style="white-space:pre-wrap"></div>
+    <div class="row end"><button class="ghost" id="mNo">取消</button><button id="mYes">确定</button></div>
+  </div>
+</div>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.prototype.slice.call(r.querySelectorAll(s));
+const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
+const fmtBytes = (n) => (n < 1024 ? n + " B" : n < 1048576 ? (n / 1024).toFixed(1) + " KB" : (n / 1048576).toFixed(1) + " MB");
+const api = async (p, opts) => {
+  const r = await fetch(p, opts);
+  const d = await r.json().catch(() => ({ error: "响应不是 JSON（HTTP " + r.status + "）" }));
+  return d;
+};
+const post = (p, body) => api(p, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(body || {}) });
+
+let CFG = { site: "", port: 4318 };
+let S = { tab: "import", lib: { images: [], remoteAt: 0 }, sel: {}, post: null, importQ: [], fails: [], busy: false };
+
+// ── 通用 UI：toast / 确认框 / 页签 ──
+let toastTimer = null;
+function toast(msg, kind) {
+  const t = $("#toast");
+  t.textContent = msg;
+  t.className = "toast" + (kind ? " " + kind : "");
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => (t.hidden = true), 2600);
+}
+function ask(title, body, okLabel, danger) {
+  return new Promise((resolve) => {
+    $("#mTitle").textContent = title;
+    $("#mBody").textContent = body || "";
+    const yes = $("#mYes");
+    yes.textContent = okLabel || "确定";
+    yes.className = danger ? "danger" : "";
+    $("#modal").hidden = false;
+    const done = (v) => {
+      $("#modal").hidden = true;
+      yes.onclick = null;
+      $("#mNo").onclick = null;
+      resolve(v);
+    };
+    yes.onclick = () => done(true);
+    $("#mNo").onclick = () => done(false);
+  });
+}
+function askText(title, placeholder, value) {
+  return new Promise((resolve) => {
+    $("#mTitle").textContent = title;
+    const body = $("#mBody");
+    body.textContent = "";
+    const input = document.createElement("input");
+    input.type = "text";
+    input.placeholder = placeholder || "";
+    input.value = value || "";
+    input.style.width = "100%";
+    body.appendChild(input);
+    const yes = $("#mYes");
+    yes.textContent = "保存";
+    yes.className = "";
+    $("#modal").hidden = false;
+    const done = (v) => {
+      $("#modal").hidden = true;
+      yes.onclick = null;
+      $("#mNo").onclick = null;
+      resolve(v);
+    };
+    yes.onclick = () => done(input.value);
+    $("#mNo").onclick = () => done(null);
+    setTimeout(() => input.focus(), 30);
+  });
+}
+function setTab(name) {
+  S.tab = name;
+  $$("#tabs button").forEach((b) => b.classList.toggle("on", b.dataset.tab === name));
+  ["import", "library", "post", "git", "sync", "tips"].forEach((t) => ($("#tab-" + t).hidden = t !== name));
+  try { localStorage.setItem("imgtool-tab", name); } catch (e) {}
+  if (name === "library") loadLibrary(false);
+  if (name === "post") loadPosts();
+  if (name === "sync") loadSyncPlan();
+}
+
+// ── 复制 ──
+const enc = (name) => encodeURI("/content-images/" + name).replace(/%2F/g, "/");
+function copyText(name, alt) {
+  const a = alt === undefined ? $("#alt").value.trim() : alt;
+  const fmt = $("#fmt").value;
+  if (fmt === "html") return '<img src="' + enc(name) + '" alt="' + esc(a) + '">';
+  if (fmt === "path") return enc(name);
+  if (fmt === "full") return CFG.site + enc(name);
+  return "![" + a + "](" + enc(name) + ")";
+}
+async function copyTo(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch (e) {
+    toast("复制失败，请手动选中复制：\n" + text.slice(0, 120));
+    return false;
+  }
+}
+
+// ── 总览 ──
+async function refreshSummary() {
+  const d = await api("/api/summary");
+  if (d.error) return;
+  $("#subline").textContent = "本地 " + d.count + " 张 · " + fmtBytes(d.totalBytes) + " · 未上传 " + d.missing + " · 未被引用 " + d.unused;
+  const p = $("#pillMissing");
+  p.hidden = !d.missing;
+  p.textContent = "未上传 " + d.missing;
+  $("#trashCount").textContent = d.trashCount ? "（" + d.trashCount + " 个文件）" : "（空）";
+}
+
+// ── 导入 ──
+function impRow(item) {
+  const li = document.createElement("li");
+  li.dataset.key = item.key;
+  const icon = item.thumbUrl ? '<img class="thumb" src="' + item.thumbUrl + '">' : '<div class="ic">' + esc((item.file.name.split(".").pop() || "").slice(0, 6)) + "</div>";
+  li.innerHTML = icon +
+    '<div><div style="font-size:12px">' + esc(item.name) + '</div><div class="msg">' + fmtBytes(item.size) + "</div></div><div class='sp'></div><span class='msg'></span><div class='acts'></div>";
+  return li;
+}
+function impUpdate(item) {
+  const li = $('[data-key="' + item.key + '"]');
+  if (!li) return;
+  const st = $(".msg", li);
+  const acts = $(".acts", li);
+  if (item.status === "waiting") { st.textContent = "等待…"; }
+  if (item.status === "working") { st.textContent = "导入中…"; }
+  if (item.status === "ok") {
+    st.textContent = "✅ 已导入";
+    acts.innerHTML = "<button class='ghost cp'>复制</button>";
+    $(".cp", acts).onclick = async () => { if (await copyTo(copyText(item.name, $("#alt").value.trim()))) toast("已复制：" + item.name); };
+  }
+  if (item.status === "dup") {
+    st.textContent = "♻️ 与已有图相同";
+    acts.innerHTML = "<button class='ghost cp'>复制</button>";
+    $(".cp", acts).onclick = async () => { if (await copyTo(copyText(item.name, $("#alt").value.trim()))) toast("已复制：" + item.name); };
+  }
+  if (item.status === "fail") {
+    st.textContent = "❌ " + (item.error || "失败");
+    st.classList.add("bad");
+  }
+}
+let impSeq = 0;
+function enqueueFiles(files) {
+  const list = Array.prototype.slice.call(files || []);
+  if (!list.length) return;
+  list.forEach((f) => {
+    const item = { key: "f" + ++impSeq, file: f, name: f.name || "screenshot.png", size: f.size, status: "waiting", error: "" };
+    S.importQ.push(item);
+    $("#list1").prepend(impRow(item));
+    impUpdate(item);
+  });
+  pumpImport();
+}
+async function pumpImport() {
+  const running = S.importQ.filter((i) => i.status === "working").length;
+  if (running >= 3) return;
+  const next = S.importQ.find((i) => i.status === "waiting");
+  if (!next) {
+    if (running === 0) finishImport();
+    return;
+  }
+  next.status = "working";
+  impUpdate(next);
+  $("#impProg").hidden = false;
+  const total = S.importQ.length;
+  const done = S.importQ.filter((i) => i.status !== "waiting" && i.status !== "working").length;
+  $("#impBar").style.width = Math.round((done / total) * 100) + "%";
+  $("#impStatus").textContent = "导入中 " + (done + 1) + "/" + total;
+  try {
+    const buf = await next.file.arrayBuffer();
+    const r = await fetch("/api/import", {
+      method: "POST",
+      headers: {
+        "x-filename": encodeURIComponent(next.file.name || "image.png"),
+        "x-prefix": encodeURIComponent($("#prefix").value.trim()),
+        "x-keepname": $("#keep").checked ? "1" : "0",
+        "x-alt": encodeURIComponent($("#alt").value.trim()),
+      },
+      body: buf,
+    });
+    const d = await r.json();
+    if (d.error) { next.status = "fail"; next.error = d.error; S.fails.push(next); }
+    else { next.name = d.name; next.status = d.deduped ? "dup" : "ok"; next.thumbUrl = d.url; }
+  } catch (e) {
+    next.status = "fail";
+    next.error = String(e);
+    S.fails.push(next);
+  }
+  impUpdate(next);
+  pumpImport();
+}
+async function finishImport() {
+  const items = S.importQ.filter((i) => i.status === "ok" || i.status === "dup");
+  const failed = S.importQ.filter((i) => i.status === "fail");
+  $("#impStatus").textContent = "完成：" + items.length + " 张" + (failed.length ? "（失败 " + failed.length + " 张）" : "");
+  $("#impBar").style.width = "100%";
+  $("#retryFail").hidden = failed.length === 0;
+  if (items.length && $("#autoCopy").checked) {
+    const text = items.map((i) => copyText(i.name, $("#alt").value.trim())).join("\n");
+    if (await copyTo(text)) toast("已复制 " + items.length + " 张的" + ($("#fmt").value === "md" ? " Markdown" : "链接"));
+  }
+  refreshSummary();
+}
+$("#retryFail").onclick = () => {
+  const retry = S.importQ.filter((i) => i.status === "fail");
+  retry.forEach((i) => { i.status = "waiting"; i.error = ""; impUpdate(i); });
+  S.fails = [];
+  $("#retryFail").hidden = true;
+  pumpImport();
+};
+const drop = $("#drop");
+drop.onclick = () => $("#file").click();
+$("#file").onchange = (e) => { enqueueFiles(e.target.files); e.target.value = ""; };
+["dragenter", "dragover"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add("hot"); }));
+["dragleave", "drop"].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove("hot"); }));
+drop.addEventListener("drop", (e) => enqueueFiles(e.dataTransfer.files));
+window.addEventListener("paste", (e) => { const f = Array.prototype.slice.call((e.clipboardData || {}).files || []); if (f.length) enqueueFiles(f); });
+window.addEventListener("keydown", (e) => {
+  if ((e.ctrlKey || e.metaKey) && e.shiftKey && (e.key === "u" || e.key === "U")) { e.preventDefault(); readClipboard(); }
+  if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); if (S.tab === "post" && S.post) publish(); else gitCommit(); }
+});
+async function readClipboard() {
+  try {
+    const items = await navigator.clipboard.read();
+    const files = [];
+    for (const it of items) {
+      const type = it.types.find((t) => t.indexOf("image/") === 0);
+      if (!type) continue;
+      const blob = await it.getType(type);
+      const ext = (type.split("/")[1] || "png").replace("jpeg", "jpg");
+      files.push(new File([blob], "clipboard-" + Date.now() + "." + ext, { type }));
+    }
+    if (!files.length) { toast("剪贴板里没有图片（有权限提示要先允许）"); return; }
+    enqueueFiles(files);
+  } catch (e) {
+    toast("读剪贴板失败（浏览器权限），改用 Ctrl+V 粘贴即可");
+  }
+}
+
+// ── 图库 ──
+async function loadLibrary(force) {
+  const d = await api("/api/images" + (force ? "?refresh=1" : ""));
+  if (d.error) { toast("读取图库失败：" + d.error); return; }
+  S.lib = d;
+  S.sel = {};
+  const t = new Date(d.remoteAt || 0);
+  $("#libSummary").textContent = "共 " + d.count + " 张 · " + fmtBytes(d.totalBytes) + " · 未上传 " + d.missing + " · 未被引用 " + d.unused +
+    (d.remoteExtra.length ? " · 服务器多出 " + d.remoteExtra.length + " 个文件" : "") +
+    " · 服务器清单 " + (d.remoteAt ? t.toLocaleTimeString() : "读取失败");
+  renderLib();
+  updateSelbar();
+}
+function libFiltered() {
+  const q = $("#libQ").value.trim().toLowerCase();
+  const f = $("#libFilter").value;
+  let list = S.lib.images.slice();
+  if (q) list = list.filter((i) => i.name.toLowerCase().indexOf(q) >= 0);
+  if (f === "missing") list = list.filter((i) => i.state !== "ok");
+  if (f === "ok") list = list.filter((i) => i.state === "ok");
+  if (f === "unused") list = list.filter((i) => !i.refs.length);
+  if (f === "big") list = list.filter((i) => i.bytes > 1048576);
+  const s = $("#libSort").value;
+  if (s === "name") list.sort((a, b) => a.name.localeCompare(b.name));
+  else if (s === "size") list.sort((a, b) => b.bytes - a.bytes);
+  else list.sort((a, b) => b.mtimeMs - a.mtimeMs);
+  return list;
+}
+function renderLib() {
+  const list = libFiltered();
+  $("#libEmpty").hidden = list.length > 0;
+  const grid = $("#libGrid");
+  grid.innerHTML = "";
+  list.forEach((i) => {
+    const isImg = /\.(png|jpe?g|gif|webp|svg|bmp|avif|ico)$/i.test(i.name);
+    const badge = i.state === "ok" ? '<span class="badge ok">已上传</span>' : i.state === "missing" ? '<span class="badge miss">未上传</span>' : '<span class="badge diff">大小不一致</span>';
+    const refs = i.refs.length ? '<span class="badge ref" title="' + esc(i.refs.join(", ")) + '">' + i.refs.length + " 篇引用</span>" : '<span class="badge">未被引用</span>';
+    const div = document.createElement("div");
+    div.className = "item" + (S.sel[i.name] ? " sel" : "");
+    div.dataset.name = i.name;
+    div.innerHTML =
+      '<div class="ck2"><input type="checkbox" ' + (S.sel[i.name] ? "checked" : "") + "></div>" +
+      '<div class="ph">' + (isImg ? '<img loading="lazy" src="/content-images/' + encodeURIComponent(i.name) + '" alt="">' : '<span class="msg">' + esc((i.name.split(".").pop() || "").toUpperCase()) + "</span>") + "</div>" +
+      '<div class="nm" title="' + esc(i.name) + '">' + esc(i.name) + "</div>" +
+      '<div class="meta">' + fmtBytes(i.bytes) + badge + refs + "</div>" +
+      (i.alt ? '<div class="msg">alt：' + esc(i.alt) + "</div>" : "") +
+      '<div class="acts">' +
+      '<button class="ghost" data-act="copy">复制</button>' +
+      '<button class="ghost" data-act="alt">alt</button>' +
+      (i.state !== "ok" ? '<button class="ghost" data-act="up">上传</button>' : "") +
+      '<button class="ghost danger" data-act="del">删除</button>' +
+      "</div>";
+    grid.appendChild(div);
+  });
+}
+$("#libGrid").addEventListener("click", async (e) => {
+  const item = e.target.closest(".item");
+  if (!item) return;
+  const name = item.dataset.name;
+  const img = S.lib.images.find((x) => x.name === name);
+  if (e.target.type === "checkbox") {
+    S.sel[name] = e.target.checked;
+    item.classList.toggle("sel", e.target.checked);
+    updateSelbar();
+    return;
+  }
+  const act = e.target.dataset.act;
+  if (!act) return;
+  if (act === "copy") {
+    if (await copyTo(copyText(name, img && img.alt ? img.alt : ""))) toast("已复制：" + name);
+  } else if (act === "alt") {
+    const v = await askText("alt 文本：" + name, "例：ESP32 引脚接线图", img ? img.alt : "");
+    if (v === null) return;
+    const d = await post("/api/images/alt", { name, alt: v });
+    if (d.error) { toast("保存失败：" + d.error); return; }
+    if (img) img.alt = d.alt;
+    renderLib();
+    toast(v.trim() ? "已保存 alt" : "已清除 alt");
+  } else if (act === "up") {
+    await uploadNames([name]);
+  } else if (act === "del") {
+    await trashWithConfirm([name]);
+  }
+});
+async function uploadNames(names) {
+  if (!names.length) return;
+  const prog = $("#impProg");
+  prog.hidden = false;
+  let up = 0, skip = 0, fail = 0, doneN = 0;
+  for (let i = 0; i < names.length; i += 25) {
+    const chunk = names.slice(i, i + 25);
+    const d = await post("/api/upload-server", { names: chunk });
+    if (d.error) { toast("上传失败：" + d.error); break; }
+    up += d.uploaded || 0; skip += d.skipped || 0; fail += d.failed || 0;
+    doneN += chunk.length;
+    $("#impBar").style.width = Math.round((doneN / names.length) * 100) + "%";
+    $("#impStatus").textContent = "上传中 " + doneN + "/" + names.length;
+  }
+  $("#impStatus").textContent = "上传完成：成功 " + up + " · 跳过 " + skip + (fail ? " · 失败 " + fail : "");
+  toast(fail ? "上传完成，失败 " + fail + " 张（见日志）" : "上传完成：新增 " + up + " · 跳过 " + skip);
+  console.log("upload:", { up, skip, fail });
+  await loadLibrary(true);
+  refreshSummary();
+}
+async function trashWithConfirm(names) {
+  const infos = names.map((n) => S.lib.images.find((x) => x.name === n)).filter(Boolean);
+  const refs = infos.filter((i) => i.refs.length);
+  const lines = [];
+  if (infos.length) lines.push("将移入回收站（可恢复）：" + infos.map((i) => i.name).join("、"));
+  if (refs.length) lines.push("注意：仍被文章引用 —— " + refs.map((i) => i.name + "（" + i.refs.length + " 篇）").join("、"));
+  lines.push("这里只动本地文件，服务器上的副本不受影响。");
+  if (!(await ask("移入回收站？", lines.join("\n\n"), "移入回收站", true))) return;
+  const d = await post("/api/trash", { names });
+  const ok = (d.results || []).filter((r) => r.ok).length;
+  toast("已移入回收站：" + ok + " 个");
+  await loadLibrary(true);
+  loadTrash();
+  refreshSummary();
+}
+function updateSelbar() {
+  const names = Object.keys(S.sel).filter((k) => S.sel[k]);
+  const bar = $("#selbar");
+  bar.hidden = names.length === 0;
+  const miss = names.filter((n) => { const i = S.lib.images.find((x) => x.name === n); return i && i.state !== "ok"; }).length;
+  $("#selInfo").textContent = "已选 " + names.length + " 张" + (miss ? "（" + miss + " 张未上传）" : "");
+}
+$("#selCancel").onclick = () => { S.sel = {}; renderLib(); updateSelbar(); };
+$("#selUpload").onclick = () => uploadNames(Object.keys(S.sel).filter((k) => S.sel[k]));
+$("#selCopy").onclick = async () => {
+  const names = Object.keys(S.sel).filter((k) => S.sel[k]);
+  const text = names.map((n) => { const i = S.lib.images.find((x) => x.name === n); return copyText(n, i && i.alt ? i.alt : ""); }).join("\n");
+  if (await copyTo(text)) toast("已复制 " + names.length + " 条");
+};
+$("#selTrash").onclick = () => trashWithConfirm(Object.keys(S.sel).filter((k) => S.sel[k]));
+$("#libSelMissing").onclick = () => {
+  S.sel = {};
+  libFiltered().filter((i) => i.state !== "ok").forEach((i) => (S.sel[i.name] = true));
+  renderLib();
+  updateSelbar();
+};
+$("#libClearSel").onclick = () => { S.sel = {}; renderLib(); updateSelbar(); };
+["libQ", "libFilter", "libSort"].forEach((id) => ($("#" + id).oninput = renderLib));
+$("#libFilter").onchange = renderLib;
+$("#libSort").onchange = renderLib;
+$("#libRefresh").onclick = () => loadLibrary(true);
+
+async function loadTrash() {
+  const d = await api("/api/trash");
+  const list = $("#trashList");
+  list.innerHTML = "";
+  if (!d.files || !d.files.length) { list.innerHTML = '<li class="msg">回收站是空的</li>'; return; }
+  d.files.forEach((f) => {
+    const li = document.createElement("li");
+    li.innerHTML = '<div><div style="font-size:12px">' + esc(f.name) + '</div><div class="msg">' + fmtBytes(f.bytes) + " · " + new Date(f.mtimeMs).toLocaleString() + "</div></div><div class='sp'></div>" +
+      "<button class='ghost' data-act='restore'>恢复</button><button class='ghost danger' data-act='purge'>彻底删除</button>";
+    li.querySelector("[data-act=restore]").onclick = async () => {
+      const r = await post("/api/trash/restore", { names: [f.name] });
+      const res = (r.results || [])[0] || {};
+      toast(res.ok ? "已恢复" : "恢复失败：" + res.out);
+      loadTrash(); loadLibrary(true); refreshSummary();
+    };
+    li.querySelector("[data-act=purge]").onclick = async () => {
+      if (!(await ask("彻底删除？", "《" + f.name + "》将从回收站永久删除，无法恢复。", "彻底删除", true))) return;
+      const r = await post("/api/trash/purge", { names: [f.name] });
+      const res = (r.results || [])[0] || {};
+      toast(res.ok ? "已永久删除" : "删除失败：" + res.out);
+      loadTrash(); refreshSummary();
+    };
+    list.appendChild(li);
+  });
+}
+$("#trashEmpty").onclick = async () => {
+  if (!(await ask("清空回收站？", "回收站里的所有文件将被永久删除，无法恢复。", "清空", true))) return;
+  const d = await post("/api/trash/empty", {});
+  toast("已清空：" + (d.removed || 0) + " 个文件");
+  loadTrash(); refreshSummary();
+};
+async function loadHistory() {
+  const d = await api("/api/history?limit=60");
+  const list = $("#histList");
+  list.innerHTML = "";
+  const kindName = { import: "导入", fetch: "下载", upload: "上传", trash: "回收站", restore: "恢复", purge: "彻底删除", publish: "发布" };
+  (d.entries || []).forEach((e) => {
+    const li = document.createElement("li");
+    li.innerHTML = '<span class="msg">' + new Date(e.at).toLocaleString() + "</span><span class='badge'>" + esc(kindName[e.kind] || e.kind) + "</span><span style='font-size:12px'>" + esc(e.name) + "</span>" +
+      (e.bytes ? '<span class="msg">' + fmtBytes(e.bytes) + "</span>" : "") +
+      (e.note ? '<span class="msg">' + esc(e.note) + "</span>" : "") +
+      (e.ok ? "" : '<span class="badge diff">失败</span>');
+    list.appendChild(li);
+  });
+  if (!list.children.length) list.innerHTML = '<li class="msg">还没有记录</li>';
+}
+
+// ── 文章检查 ──
+async function loadPosts() {
+  const d = await api("/api/posts");
+  const sel = $("#postSel");
+  const cur = sel.value;
+  sel.innerHTML = (d.posts || []).map((p) => '<option value="' + esc(p.slug) + '">' + esc(p.title || p.slug) + "（" + esc(p.slug) + "）</option>").join("");
+  if (cur && !sel.value) sel.value = cur;
+  if (sel.value) loadPostRefs(sel.value, false);
+}
+async function loadPostRefs(slug, refresh) {
+  const d = await api("/api/post-refs?slug=" + encodeURIComponent(slug) + (refresh ? "&refresh=1" : ""));
+  if (d.error) { $("#postMsg").textContent = "失败：" + d.error; return; }
+  S.post = d;
+  const c = d.counts;
+  $("#postMsg").textContent = d.title ? "《" + d.title + "》" : "";
+  $("#postChips").innerHTML =
+    '<span class="badge">引用 ' + c.total + "</span>" +
+    '<span class="badge ok">就绪 ' + c.ready + "</span>" +
+    (c.missingUpload ? '<span class="badge miss">未上传 ' + c.missingUpload + "</span>" : "") +
+    (c.missingLocal ? '<span class="badge diff">本地缺失 ' + c.missingLocal + "</span>" : "") +
+    (c.external ? '<span class="badge ref">外链 ' + c.external + "</span>" : "");
+  const rows = $("#postRows");
+  rows.innerHTML = "";
+  if (!d.images.length) rows.innerHTML = '<li class="msg">这篇文章没有引用本地图片</li>';
+  d.images.forEach((i) => {
+    const li = document.createElement("li");
+    const okLocal = i.local ? '<span class="badge ok">本地有</span>' : '<span class="badge diff">本地缺失</span>';
+    const okRemote = i.state === "ok" ? '<span class="badge ok">已上传</span>' : i.state === "differs" ? '<span class="badge diff">大小不一致</span>' : i.local ? '<span class="badge miss">未上传</span>' : '<span class="badge">—</span>';
+    li.innerHTML = '<div style="min-width:0"><div style="font-size:12px;word-break:break-all">' + esc(i.name) + "</div><div class='msg'>" + esc(i.ref) + "</div></div><div class='sp'></div>" + okLocal + okRemote +
+      '<button class="ghost" data-act="copy">复制</button>' +
+      (i.local && i.state !== "ok" ? '<button class="ghost" data-act="up">上传</button>' : "");
+    li.querySelector("[data-act=copy]").onclick = async () => { if (await copyTo(copyText(i.name, ""))) toast("已复制：" + i.name); };
+    const up = li.querySelector("[data-act=up]");
+    if (up) up.onclick = async () => { await uploadNames([i.name]); loadPostRefs(slug, true); };
+    rows.appendChild(li);
+  });
+  $("#pubHint").textContent = c.missingLocal
+    ? "有 " + c.missingLocal + " 个引用在本地找不到文件（可能是图床外链或引用写错），发布时会先问你。"
+    : c.external
+    ? "有 " + c.external + " 个外链图片，建议拉到本地：在「导入」页用「图床 URL → 本地」处理。"
+    : "";
+}
+$("#postSel").onchange = () => loadPostRefs($("#postSel").value, false);
+$("#postRefreshBtn").onclick = () => loadPostRefs($("#postSel").value, true);
+
+async function publish() {
+  if (!S.post) { toast("先选一篇文章"); return; }
+  if (S.busy) { toast("正在执行中…"); return; }
+  const slug = S.post.slug;
+  const c = S.post.counts;
+  const plan = [];
+  if (c.missingUpload) plan.push("补传 " + c.missingUpload + " 张未上传的图");
+  else plan.push("图片都已就绪，无需补传");
+  plan.push("提交并推送（只提交 content/、原稿归档/、文档/）");
+  plan.push("校验公网可访问性");
+  let allowMissing = false;
+  if (c.missingLocal) {
+    const go = await ask("发布《" + (S.post.title || slug) + "》？", plan.join("\n") + "\n\n⚠️ 有 " + c.missingLocal + " 个引用本地缺图，仍然继续吗？", "仍然发布", true);
+    if (!go) return;
+    allowMissing = true;
+  } else if (!(await ask("发布《" + (S.post.title || slug) + "》？", plan.join("\n\n"), "开始发布"))) return;
+  S.busy = true;
+  $("#publish").disabled = true;
+  $("#pubHint").textContent = "发布中…（补传 + 提交推送 + 公网校验）";
+  try {
+    const d = await post("/api/publish", { slug, message: $("#pubMsg").value.trim(), allowMissingLocal: allowMissing });
+    const out = (d.steps || []).map((s) => "$ " + s.name + "\n" + (s.out || "(无输出)")).join("\n\n");
+    $("#pubOut").hidden = false;
+    $("#pubOut").textContent = out;
+    const sum = d.summary || {};
+    if (d.ok) {
+      $("#pubHint").textContent = "✅ 发布完成：上传 " + (sum.uploaded || 0) + " · 跳过 " + (sum.skipped || 0) + " · 公网可访问 " + (sum.publicOk || 0) + "/" + ((sum.publicOk || 0) + (sum.publicFail || []).length);
+      toast("✅ 发布完成");
+    } else {
+      const stageName = { refs: "检查引用", upload: "上传图片", pull: "拉取远端", push: "推送" }[d.stage] || d.stage;
+      $("#pubHint").textContent = "⚠️ 在「" + stageName + "」这一步停下了，请看下方输出。";
+      toast("发布未完成（" + stageName + "）");
+    }
+    await loadPostRefs(slug, true);
+    refreshSummary();
+  } finally {
+    S.busy = false;
+    $("#publish").disabled = false;
+  }
+}
+$("#publish").onclick = publish;
+
+// ── 图床下载 / 替换 ──
+const pairs = [];
+$("#go").onclick = async () => {
+  const urls = $("#urls").value.split(/\s+/).map((s) => s.trim()).filter((s) => /^https?:\/\//.test(s));
+  pairs.length = 0;
+  $("#list2").innerHTML = "";
+  $("#msg2").textContent = urls.length ? "下载中…" : "请先填 URL";
+  let ok = 0, failed = 0;
+  for (const url of urls) {
+    const d = await post("/api/fetch", { url, prefix: $("#prefix").value.trim(), keepName: $("#keep").checked, alt: $("#alt").value.trim() });
+    if (d.error) { failed += 1; $("#msg2").textContent = "失败：" + d.error; continue; }
+    pairs.push({ from: url, to: d.url });
+    ok += 1;
+    const li = document.createElement("li");
+    li.innerHTML = '<img class="thumb" src="' + d.url + '"><div style="min-width:0"><div style="font-size:12px;word-break:break-all">' + esc(d.name) + "</div><div class='msg'>" + esc(copyText(d.name, $("#alt").value.trim())) + "</div></div><div class='sp'></div><button class='ghost cp'>复制</button><button class='ghost up'>上传</button>";
+    li.querySelector(".cp").onclick = async () => { if (await copyTo(copyText(d.name, $("#alt").value.trim()))) toast("已复制"); };
+    li.querySelector(".up").onclick = async () => { await uploadNames([d.name]); };
+    $("#list2").prepend(li);
+  }
+  $("#msg2").textContent = "完成：" + ok + " 张" + (failed ? "（失败 " + failed + " 张）" : "");
+  refreshSummary();
+};
+$("#apply").onclick = async () => {
+  if (!pairs.length) { $("#msg2").textContent = "先在「下载并本地化」得到替换映射，再选文章"; return; }
+  const slug = $("#post").value;
+  const d = await post("/api/replace", { slug, pairs });
+  $("#msg2").textContent = d.error ? "失败：" + d.error : "已替换 " + d.changed + " 处引用" + (d.backup ? "（备份 " + d.backup + "）" : "") + "（记得提交推送）";
+};
+$("#upall").onclick = async () => {
+  const b = $("#upall");
+  b.disabled = true;
+  b.textContent = "上传中…（图片多时会稍慢）";
+  const d = await post("/api/upload-server", { all: true });
+  b.disabled = false;
+  if (d.error) { b.textContent = "⚠️ " + d.error; return; }
+  const parts = ["✅ 上传 " + (d.uploaded || 0) + " 张"];
+  if (d.skipped) parts.push("跳过 " + d.skipped + " 张（已存在）");
+  if (d.failed) parts.push("失败 " + d.failed + " 张（详情见控制台）");
+  b.textContent = parts.join(" · ");
+  console.log("upload-server:", d);
+  refreshSummary();
+  if (S.tab === "library") loadLibrary(true);
+};
+
+// ── Git ──
+const $gitout = $("#gitout");
+async function gitStatus() {
+  try {
+    const d = await api("/api/git/status");
+    $gitout.textContent = d.out || "(工作区干净)";
+  } catch (e) { $gitout.textContent = String(e); }
+}
+function showSteps(d) {
+  $gitout.textContent = (d.steps || []).map((s) => "$ " + s.name + "\n" + (s.out || "(无输出)")).join("\n\n");
+}
+async function gitCommit() {
+  const msg = $("#cmsg").value.trim();
+  if (!(await ask("提交并推送？", "提交说明：" + (msg || "(默认)") + "\n\n只提交 content/、原稿归档/、文档/ 下的改动；git status 里列出的其它改动不会被带上。", "提交并推送"))) return;
+  $("#gitmsg").textContent = "执行中…";
+  const d = await post("/api/git/commit", { message: $("#cmsg").value });
+  $("#gitmsg").textContent = d.ok ? "✅ 已提交并推送" : (d.hint || "⚠️ 未完成");
+  showSteps(d);
+  refreshSummary();
+}
+$("#refresh").onclick = gitStatus;
+$("#pull").onclick = async () => { const d = await post("/api/git/pull", {}); $("#gitmsg").textContent = d.ok ? "pull 完成" : "pull 失败"; showSteps(d); };
+$("#commit").onclick = gitCommit;
+
+// ── 同步（不走 git：直接跟服务器的文章目录对拷） ──
+const SYNC_LABEL = {
+  same: ["一致", "ok"],
+  remote: ["服务器改过", "diff"],
+  local: ["本地改过", "ref"],
+  conflict: ["两边都改过", "miss"],
+  new: ["仅服务器有", "diff"],
+  localOnly: ["仅本地有", "miss"],
+};
+let SYNC = { plan: null, sel: {} };
+async function loadSyncPlan() {
+  $("#syncMsg").textContent = "检查中…（要 ssh 连一下服务器）";
+  const d = await api("/api/sync/plan");
+  if (d.error) {
+    $("#syncMsg").textContent = "⚠️ " + d.error;
+    return;
+  }
+  SYNC.plan = d;
+  SYNC.sel = {};
+  $("#syncDir").textContent = (d.host || "?") + ":" + (d.dir || "");
+  const c = d.counts || {};
+  $("#syncChips").innerHTML = ["conflict", "remote", "new", "local", "localOnly", "same"]
+    .filter((k) => c[k])
+    .map((k) => '<span class="badge ' + SYNC_LABEL[k][1] + '">' + SYNC_LABEL[k][0] + " " + c[k] + "</span>")
+    .join("");
+  const todo = ["conflict", "remote", "new", "local", "localOnly"].reduce((n, k) => n + (c[k] || 0), 0);
+  $("#syncMsg").textContent = todo
+    ? "有 " + todo + " 篇有差异" + (d.baseAt
+      ? "（上次同步：" + d.baseAt.slice(0, 19).replace("T", " ") + "）"
+      : "（还没有基线：第一次建议先点「全部以服务器为准」）")
+    : "两边完全一致 ✅";
+  renderSync();
+}
+function renderSync() {
+  const box = $("#syncRows");
+  box.innerHTML = "";
+  const rows = (SYNC.plan ? SYNC.plan.rows : []).filter((r) => r.state !== "same" || SYNC.sel[r.slug]);
+  if (!rows.length) {
+    box.innerHTML = '<li class="empty">没有需要处理的文章</li>';
+    return;
+  }
+  rows.forEach((r) => {
+    const lab = SYNC_LABEL[r.state] || ["?", ""];
+    const li = document.createElement("li");
+    li.style.cssText = "display:flex;gap:8px;align-items:center";
+    li.innerHTML =
+      '<label class="ck"><input type="checkbox" data-slug="' + esc(r.slug) + '"' + (SYNC.sel[r.slug] ? " checked" : "") + "></label>" +
+      '<b style="min-width:200px">' + esc(r.slug) + "</b>" +
+      '<span class="badge ' + lab[1] + '">' + lab[0] + "</span>" +
+      '<span class="msg" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">' + esc(r.title || "") + "</span>" +
+      (r.local ? "" : '<span class="badge">本地无</span>') +
+      (r.remote ? "" : '<span class="badge">服务器无</span>') +
+      '<button class="ghost" data-act="diff" data-slug="' + esc(r.slug) + '">看差异</button>';
+    box.appendChild(li);
+  });
+}
+function syncPick(states) {
+  SYNC.sel = {};
+  (SYNC.plan ? SYNC.plan.rows : []).forEach((r) => {
+    if (states.indexOf(r.state) >= 0) SYNC.sel[r.slug] = true;
+  });
+  renderSync();
+}
+function syncChecked() {
+  return Object.keys(SYNC.sel).filter((s) => SYNC.sel[s]);
+}
+async function syncRunNow(direction, slugs) {
+  if (!slugs.length) {
+    toast("先在列表里勾选要处理的文章");
+    return;
+  }
+  const withImages = $("#syncImages").checked;
+  const label = direction === "pull" ? "拉取（服务器 → 本地）" : "推送（本地 → 服务器）";
+  const body = "共 " + slugs.length + " 篇：\n" + slugs.join("、") +
+    (withImages ? "\n（同时同步图片）" : "") +
+    "\n\n执行前会自动备份到 data/imgtool-backups/sync/。";
+  if (!(await ask(label + "？", body, label, direction === "push"))) return;
+  $("#syncMsg").textContent = "执行中…（可能要一会儿）";
+  const d = await post("/api/sync/run", { direction, slugs, images: withImages });
+  if (d.error) {
+    $("#syncMsg").textContent = "⚠️ " + d.error;
+    return;
+  }
+  $("#syncMsg").textContent = (d.ok ? "✅ " : "⚠️ ") + (d.steps || []).join("；");
+  const out = $("#syncOut");
+  out.hidden = false;
+  out.textContent = (d.steps || []).join("\n") +
+    (d.backup ? "\n备份：" + d.backup : "") +
+    (d.failed && d.failed.length ? "\n\n失败：\n" + d.failed.map((f) => "  " + f.name + "：" + f.out).join("\n") : "");
+  await loadSyncPlan();
+  refreshSummary();
+}
+$("#syncCheck").onclick = () => loadSyncPlan();
+$("#pickPull").onclick = () => syncPick(["remote", "new", "conflict"]);
+$("#pickPush").onclick = () => syncPick(["local", "localOnly", "conflict"]);
+$("#syncPull").onclick = () => syncRunNow("pull", syncChecked());
+$("#syncPush").onclick = () => syncRunNow("push", syncChecked());
+$("#syncPullAll").onclick = () => syncRunNow("pull", (SYNC.plan ? SYNC.plan.rows : []).filter((r) => r.remote).map((r) => r.slug));
+$("#syncPushAll").onclick = () => syncRunNow("push", (SYNC.plan ? SYNC.plan.rows : []).filter((r) => r.local).map((r) => r.slug));
+$("#syncRows").addEventListener("click", async (e) => {
+  const slug = e.target.dataset.slug;
+  if (!slug) return;
+  if (e.target.type === "checkbox") {
+    SYNC.sel[slug] = e.target.checked;
+    return;
+  }
+  if (e.target.dataset.act === "diff") {
+    $("#syncMsg").textContent = "读取差异中…";
+    const d = await api("/api/sync/diff?slug=" + encodeURIComponent(slug));
+    if (d.error) {
+      $("#syncMsg").textContent = "⚠️ " + d.error;
+      return;
+    }
+    $("#syncMsg").textContent = "差异：" + slug + "（- 服务器 / + 本地）";
+    const out = $("#syncOut");
+    out.hidden = false;
+    out.textContent = d.diff || "(没有差异)";
+  }
+});
+
+// ── 启动 ──
+(async function boot() {
+  CFG = await api("/api/config");
+  if (!CFG.site) CFG.site = "";
+  $("#cmsg").value = "content: 更新 " + new Date().toISOString().slice(0, 10);
+  let tab = "import";
+  try { tab = localStorage.getItem("imgtool-tab") || "import"; } catch (e) {}
+  $$("#tabs button").forEach((b) => { b.onclick = () => setTab(b.dataset.tab); });
+  setTab(tab);
+  refreshSummary();
+  gitStatus();
+  loadTrash();
+  loadHistory();
+  if (tab === "library") loadLibrary(false);
+  if (tab === "post") loadPosts();
+  if (tab === "sync") loadSyncPlan();
+})();
+</script>
+</body>
+</html>

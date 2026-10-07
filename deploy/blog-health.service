@@ -1,0 +1,9 @@
+[Unit]
+Description=blog machine health sample
+Documentation=file:///srv/blog/文档/DEPLOY.md
+
+[Service]
+Type=oneshot
+User=root
+ExecStart=/usr/bin/python3 /srv/blog/deploy/health-sample.py
+Nice=10

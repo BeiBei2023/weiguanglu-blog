@@ -1,0 +1,35 @@
+services:
+  web:
+    build:
+      context: .
+      args:
+        NPM_REGISTRY: ${NPM_REGISTRY:-https://registry.npmmirror.com}
+    image: blog:latest
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+      PORT: "3000"
+      HOSTNAME: 0.0.0.0
+      # DNS 优先 IPv4：家宽有 IPv6，但 Docker 默认桥没有 IPv6 出口，
+      # 否则 Node 按解析顺序会先试 IPv6，导致部分站点 fetch failed（如 lobste.rs）
+      NODE_OPTIONS: --dns-result-order=ipv4first
+      # 容器时区：影响日志/页面上的时间显示、备份计划推算与「今日阅读」等按天统计
+      TZ: ${TZ:-Asia/Shanghai}
+    volumes:
+      # 内容与运行时数据持久化（git 工作副本在宿主机上）
+      - ./content:/app/content
+      - ./data:/app/data
+      # 项目文档：供工作台 /w/docs 在线浏览（只读挂载，随 git 检出更新，不用重建镜像）
+      - ./文档:/app/文档:ro
+      # 宿主机温度传感器（CPU / 主板）：只读挂进容器，供工作台实时显示
+      - /sys/class/hwmon:/sys/class/hwmon:ro
+    ports:
+      # 绑定地址：默认仅本机（由反向代理转发）；经组网/隧道对外时，在 .env 把 BIND_ADDR 设为隧道网卡 IP
+      - "${BIND_ADDR:-127.0.0.1}:3000:3000"
+      # MQTT broker（内嵌在 web 进程，工作台 /w/mqtt 管理）：设备连这个端口
+      # 改端口时：.env 的 MQTT_PORT 与工作台设置里的端口要保持一致
+      - "${BIND_ADDR:-127.0.0.1}:${MQTT_PORT:-18830}:${MQTT_PORT:-18830}"
+      # MQTT over WebSocket：公网机 Caddy 反代 wss://域名/… 到这里（设备走域名连）
+      - "${BIND_ADDR:-127.0.0.1}:${MQTT_WS_PORT:-18831}:${MQTT_WS_PORT:-18831}"
+    restart: unless-stopped

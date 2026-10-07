@@ -1,0 +1,11 @@
+# 默认按内容自动判断文本
+* text=auto
+
+# 服务器上执行的脚本/配置：强制 LF，避免 Windows 检出成 CRLF 后无法执行
+*.sh text eol=lf
+Dockerfile text eol=lf
+deploy/** text eol=lf
+.dockerignore text eol=lf
+
+# Windows 批处理必须 CRLF，否则 cmd 解析错乱
+*.bat text eol=crlf

@@ -1,0 +1,11 @@
+[Unit]
+Description=博客 定时备份到 123 云盘 (rclone)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+Environment=RCLONE_REMOTE=bg:/blog
+Environment=SRC=/srv/blog
+Environment=GIT_DIR_SRC=/srv/blog.git
+ExecStart=/srv/blog/deploy/backup-rclone.sh

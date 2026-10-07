@@ -1,0 +1,40 @@
+# 反向代理样例（Caddy）
+#
+# 用法：把下面的 site block 放进服务器上的 Caddyfile，然后：
+#   caddy validate --config /etc/caddy/Caddyfile && systemctl reload caddy
+#
+# 域名与后端地址按实际情况替换；本文件只是样例，Caddy 不会自动读它。
+
+# ── 场景 A：应用就在本机 3000 端口 ─────────────────────────────
+example.com {
+	encode zstd gzip
+	reverse_proxy 127.0.0.1:3000
+}
+
+# ── 场景 B：应用在家里/内网，经隧道组网暴露（见部署指南 §9）─────
+# 家里那台设 BIND_ADDR=<隧道网卡 IP>，这里反代到隧道 IP；公网机只开 80/443。
+#
+# example.com {
+# 	encode zstd gzip
+# 	reverse_proxy 10.0.0.2:3000
+# }
+
+# ── 场景 C：还要给设备开 MQTT over WebSocket ───────────────────
+# 路径要与 .env 里的 MQTT_WS_PATH 一致（默认 /mqtt-ws）。
+#
+# example.com {
+# 	encode zstd gzip
+#
+# 	handle /mqtt-ws* {
+# 		reverse_proxy 127.0.0.1:18831
+# 	}
+#
+# 	handle {
+# 		reverse_proxy 127.0.0.1:3000
+# 	}
+# }
+
+# 提示：
+#  · encode 放在最前面，收益最大（文本压缩）
+#  · 站点端口默认只绑 127.0.0.1，外网必须经这里转发
+#  · 后台要传图片，注意 Caddy 默认请求体上限（一般够用，超大图可在 site block 里加 request_body）
